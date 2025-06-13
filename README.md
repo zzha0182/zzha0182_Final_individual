@@ -30,18 +30,28 @@ I used the noise() function from p5.js to generate smooth and continuous pseudo-
 
 Here are the main animation modules and their code descriptions:
 This is drawAnimatedSectors
-、、、
+```
 function drawAnimatedSectors(cx, cy, t) {
   const numBlocks = 36;
   const angleStep = TWO_PI / numBlocks;
+  const radius = RADIUS;
+
   noStroke();
   for (let i = 0; i < numBlocks; i++) {
-    const n = noise(t + i * 0.1);         // Perlin 噪声驱动颜色变化
+    // use Perlin noise generating colors
+    const n = noise(t + i * 0.1);
     const r = map(n, 0, 1, 100, 255);
     const g = map(n, 0, 1, 50, 200);
     const b = map(n, 0, 1, 100, 255);
-    fill(r, g, b, 180);
-    arc(cx, cy, RADIUS * 2, RADIUS * 2, i * angleStep, (i + 1) * angleStep, PIE);
+    fill(r, g, b, 180); 
+
+    arc(
+      cx, cy,
+      radius * 2, radius * 2,
+      i * angleStep,
+      (i + 1) * angleStep,
+      PIE
+    );
   }
 }
-、、、
+```
