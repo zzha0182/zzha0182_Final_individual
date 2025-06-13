@@ -814,16 +814,3 @@ function drawAnimatedBlueRing(cx, cy, t) {
 }
 
 
-function drawAnimatedEgg(cx, cy, t) {
-  // rotation ±5°
-  const angle = map(noise(t + cx * 0.02), 0, 1, -PI / 36, PI / 36);
-  // scale 0.95–1.05
-  const s = map(noise(t + cy * 0.02), 0, 1, 0.95, 1.05);
-
-  push();
-    translate(cx, cy);
-    rotate(angle);
-    scale(s);
-    drawEgg(0, 0);  
-  pop();
-}
