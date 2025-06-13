@@ -76,7 +76,21 @@ function draw() {
     drawBlackCircles(378,80);
     drawBlackCircles(260,428);
 
+    
+
     drawRedCircle(380,400);
+    
+
+        // Here are the functions I partially called
+        let t = frameCount * 0.01;
+        drawAnimatedSectors(340, 192, t);
+        drawAnimatedSectors(184, 340, t);
+
+        drawAnimatedPetals(64, 356, t);
+        drawAnimatedPetals(304, 308, t);
+    
+        
+       
   pop();
 }
 
@@ -459,34 +473,33 @@ function drawFlawerCircles(cx, cy) {
     );
   }
 
-  // Draw 14 petals
-  const numPetals = 14;
-  const petalAngle = TWO_PI / numPetals;
-
-  const petalLength = RADIUS * 1.2;  
-  const petalWidth  = 12;           
-  const petalOffset = petalLength / 2;
-
-  noStroke();
-  for (let i = 0; i < numPetals; i++) {
-    const [rCol, gCol, bCol] = oilPalette[i % oilPalette.length];
-    fill(rCol, gCol, bCol);
-
-    const theta = i * petalAngle - PI / 2;
-    push();
-      translate(cx, cy);
-      rotate(theta);
-      // Petals: ellipse centered at (petalOffset, 0), size (petalLength, petalWidth)
-      ellipse(petalOffset, 0, petalLength, petalWidth);
-    pop();
-  }
-
-  //Flirtatious
-  fill(255, 165, 0);
-  noStroke();
-  const coreRadius = RADIUS * 0.3;  
-  ellipse(cx, cy, coreRadius * 2, coreRadius * 2);
-}
+  function drawAnimatedPetals(cx, cy, t) {
+    const numPetals = 14;
+    const petalAngle = TWO_PI / numPetals;
+    const baseLength = RADIUS * 1.2;
+    const petalWidth = 12;
+    const petalOffset = baseLength / 2;
+  
+    colorMode(HSB, 360, 100, 100, 255); // HSB mode
+    noStroke();
+    for (let i = 0; i < numPetals; i++) {
+      
+      const n = noise(t + i * 0.3);
+      const h = map(n, 0, 1, 0, 360);
+      const s = 80;
+      const b = 100;
+      fill(h, s, b, 180);
+  
+      const theta = i * petalAngle - PI / 2;
+      push();
+        translate(cx, cy);
+        rotate(theta);
+        ellipse(petalOffset, 0, baseLength, petalWidth);
+      pop();
+    }
+    colorMode(RGB, 255); 
+  }}
+  
 
 
 /**
@@ -664,3 +677,57 @@ function drawRedCircle(cx, cy) {
 
   noStroke();
 }
+
+
+/** Next is my personal part, I want to change the outer color block and line */
+function drawAnimatedSectors(cx, cy, t) {
+  const numBlocks = 36;
+  const angleStep = TWO_PI / numBlocks;
+  const radius = RADIUS;
+
+  noStroke();
+  for (let i = 0; i < numBlocks; i++) {
+    // use Perlin noise generating colors
+    const n = noise(t + i * 0.1);
+    const r = map(n, 0, 1, 100, 255);
+    const g = map(n, 0, 1, 50, 200);
+    const b = map(n, 0, 1, 100, 255);
+    fill(r, g, b, 180); 
+
+    arc(
+      cx, cy,
+      radius * 2, radius * 2,
+      i * angleStep,
+      (i + 1) * angleStep,
+      PIE
+    );
+  }
+}
+
+function drawAnimatedPetals(cx, cy, t) {
+  const numPetals = 14;
+  const petalAngle = TWO_PI / numPetals;
+  const baseLength = RADIUS * 1.2;
+  const petalWidth = 12;
+  const petalOffset = baseLength / 2;
+
+  noStroke();
+  for (let i = 0; i < numPetals; i++) {
+  
+    const n = noise(t + i * 0.3);
+    const r = map(n, 0, 1, 150, 255);
+    const g = map(n, 0, 1, 50, 180);
+    const b = map(n, 0, 1, 100, 255);
+    fill(r, g, b, 200); 
+
+    const theta = i * petalAngle - PI / 2;
+
+    push();
+      translate(cx, cy);
+      rotate(theta);
+      ellipse(petalOffset, 0, baseLength, petalWidth);
+    pop();
+  }
+}
+
+
