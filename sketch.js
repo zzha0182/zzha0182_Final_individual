@@ -88,6 +88,14 @@ function draw() {
 
         drawAnimatedPetals(64, 356, t);
         drawAnimatedPetals(304, 308, t);
+
+        drawAnimatedGreenRing(108, 248, t);
+        drawAnimatedGreenRing(292, 3, t);
+
+  // sun and moon animate
+  drawAnimatedSunMoonSize(254, 110, t);
+  drawAnimatedSunMoonSize(54, 48,   t);
+
     
         
        
@@ -728,6 +736,49 @@ function drawAnimatedPetals(cx, cy, t) {
       ellipse(petalOffset, 0, baseLength, petalWidth);
     pop();
   }
+}
+
+// Here I want to enhance the color contrast (HSB + S/B fluctuation) part2
+function drawAnimatedGreenRing(cx, cy, t) {
+  const layers = 4;
+  const spacing = 14;
+
+  colorMode(HSB, 360, 100, 100, 255);
+  noFill();
+  strokeWeight(3);
+
+  for (let i = 0; i < layers; i++) {
+    const n = noise(t + i * 0.5 + cx * 0.01);
+    
+    const h = map(n, 0, 1, 0, 360);
+    
+    const s = map(noise(t + i * 0.7), 0, 1, 50, 100);
+   
+    const b = map(noise(t + i * 0.9), 0, 1, 50, 100);
+    stroke(h, s, b, 200); // alpha 200， The overlay effect can be even stronger
+
+    const d = (RADIUS * 2) - 5 - i * spacing;
+    ellipse(cx, cy, d, d);
+  }
+
+  // Return to RGB mode to avoid affecting other draws
+  colorMode(RGB, 255);
+}
+
+
+ // Solar breath zoom animation —— base on Perlin noise‘s scale breathe part3
+function drawAnimatedSunMoonSize(cx, cy, t) {
+  // A scaling factor of 0.8 to 1.2 is generated based on the noise
+  const n = noise(t + cx * 0.02);
+  const s = map(n, 0, 1, 0.8, 1.2);
+
+  push();
+    
+    translate(cx, cy);
+    scale(s);
+    //  Passing (0,0) tells drawSunMoon to draw centered at its current position
+    drawSunMoon(0, 0);
+  pop();
 }
 
 
