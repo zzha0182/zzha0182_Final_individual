@@ -24,3 +24,24 @@ Each circle resembles a planet, some symbolising the sun and moon, others a dess
 
 We want these elements to be more than just static decoration, but to express a sense of life and rhythm through subsequent animation, making it a "breathing image".
 ![inspiration-static](inspiration.jpg)
+
+## The Technical Explanation:
+I used the noise() function from p5.js to generate smooth and continuous pseudo-random values that drive the shape in multiple dimensions, such as color, size, rotation, and so on.
+
+Here are the main animation modules and their code descriptions:
+This is drawAnimatedSectors
+、、、
+function drawAnimatedSectors(cx, cy, t) {
+  const numBlocks = 36;
+  const angleStep = TWO_PI / numBlocks;
+  noStroke();
+  for (let i = 0; i < numBlocks; i++) {
+    const n = noise(t + i * 0.1);         // Perlin 噪声驱动颜色变化
+    const r = map(n, 0, 1, 100, 255);
+    const g = map(n, 0, 1, 50, 200);
+    const b = map(n, 0, 1, 100, 255);
+    fill(r, g, b, 180);
+    arc(cx, cy, RADIUS * 2, RADIUS * 2, i * angleStep, (i + 1) * angleStep, PIE);
+  }
+}
+、、、
